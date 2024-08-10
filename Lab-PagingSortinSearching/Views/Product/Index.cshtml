@@ -1,0 +1,65 @@
+﻿@model IEnumerable<DAL.Entities.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div class="container"> <div class="col-sm-4 justify-content-center"> <form asp-action="Index"> <span class="btn-group col-sm-12"> <input class="form-control" type="text" name="SearchText" value="@ViewBag.SearchText" placeholder="Search Key"> <input class="p-1 ml-2 btn btn-sm btn-info" type="submit" value="Search" /> </span> </form> </div> </div>
+
+@if(Model != null && Model.Count() > 0)
+{
+<table class="table">
+    <thead>
+        <tr>
+                <th> 
+                    <a asp-controller="Product" asp-action="Index" asp-route-sortCol="ProductId" asp-route-sortDir="@((string)ViewData["sortDir"]=="asc" ? "desc" : "asc")">ProductId</a> 
+                    </th>
+                <th> <a asp-action="Index" asp-route-sortCol="Name" asp-route-sortDir="@((string)ViewData["sortDir"]=="asc" ? "desc" : "asc")">Name</a> </th>
+                <th> <a asp-action="Index" asp-route-sortCol="Description" asp-route-sortDir="@((string)ViewData["sortDir"]=="asc" ? "desc" : "asc")">Description</a> </th>
+                <th> <a asp-action="Index" asp-route-sortCol="Color" asp-route-sortDir="@((string)ViewData["sortDir"]=="asc" ? "desc" : "asc")">Color</a> </th>
+            <th>
+                    <a asp-action="Index" asp-route-sortCol="UnitPrice" asp-route-sortDir="@((string)ViewData["sortDir"]=="asc" ? "desc" : "asc")">Unit Price</a>
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Color)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.ProductId }) |
+                @Html.ActionLink("Delete", "Delete", new {  id=item.ProductId  })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<partial name="_Pager" model="@ViewBag.Pager" view-data="ViewData" />
+
+}
+else
+{
+    <div class="container pt-5 pb-5">No Record Found</div>
+}
